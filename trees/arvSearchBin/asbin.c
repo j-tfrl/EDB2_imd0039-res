@@ -20,9 +20,9 @@ int main(void) {
 
     //__________
     //item a)
-    printf("Em-ordem (ordenado): ");
+    printf("\nITEM A | Em-ordem (ordenado): \n");
     emOrdem(raiz_a); //não está incluindo 55 (???)
-    printf("\n");
+    printf("\n\n");
     //__________
 
     int x = 7;
@@ -32,23 +32,33 @@ int main(void) {
     //__________
     //item a)
     int x2 = 55;
-    printf("Buscando %d... %s\n", x2, buscar(raiz_a, x2) ? "encontrado" : "nao encontrado");
+    printf("\nITEM A | Buscando %d... %s\n\n", x2, buscar(raiz_a, x2) ? "encontrado" : "nao encontrado");
     //__________
 
     raiz = remover(raiz, 1);
     raiz = remover(raiz, 14);
     raiz = remover(raiz, 3);
 
-     //__________
+    //_________
     //item a)
-    //REMOÇÃO
-     //__________
    
+    raiz_a = remover(raiz_a, 10);
+    raiz_a = remover(raiz_a, 25);
+    raiz_a = remover(raiz_a, 50);
+     //_________
 
-    printf("Em-ordem após remoções: ");
+    
+    printf("\nEm-ordem após remoções: ");
     emOrdem(raiz);
-    printf("\n");
+    printf("\n\n");
+
+    //_________
+    printf("\nITEM A  | Em-ordem após remoções: ");
+    emOrdem(raiz_a);
+    printf("\n\n");
+    //_________
 
     liberarArvore(raiz);
+    liberarArvore(raiz_a);
     return 0;
 }
