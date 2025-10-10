@@ -30,7 +30,7 @@ HeapMax* criarHeap(int capacidade);
 void liberarHeap(HeapMax *heap);
 
 // Inserção e remoção:
-void inserirHeap(HeapMax *heap, Livro livro);
+void inserirHeap(HeapMax *heap, Livro* livro);
 Livro extrairMax(HeapMax *heap);
 
 // Reconstrução e utilidades:

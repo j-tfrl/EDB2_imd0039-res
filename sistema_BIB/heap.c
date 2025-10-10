@@ -30,14 +30,14 @@ void liberarHeap(HeapMax *heap) {
 }
 
 // Inserção:
-void inserirHeap(HeapMax *heap, Livro livro) {
+void inserirHeap(HeapMax *heap, Livro* livro) {
     if (heap->tamanho == heap->capacidade) {
-        printf("Heap cheia, não é possível inserir '%s'\n", livro.titulo);
+        printf("Heap cheia, não é possível inserir '%s'\n", livro->titulo);
         return;
     }
 
     int i = heap->tamanho;
-    heap->livros[i] = livro;
+    heap->livros[i] = *livro;
     heap->tamanho++;
 
     while (i > 0 && heap->livros[pai(i)].vendas < heap->livros[i].vendas) {
@@ -125,41 +125,6 @@ void imprimirTopN(HeapMax *heap, int n) {
     //PENDENTE: colocar função para mostrar só o 1o. mais vendido
 }
 
-/*
-void processarCat(const char* arqCSV, int indexColCat){
-    CatVector* categoria=leCSV_Cat(arqCSV, indexColCat);
-
-    if(!categoria || categoria->count==0){
-        printf("Nenhuma categoria encontrada. Insira um novo arquivo e tente novamente\n");
-        return;
-    }
-
-    printf("Carregadas %d categorias do .CSV", categoria->count);
-
-    // construindo a arvore
-    No* tree=buildABB(categoria);
-
-    printf("\n Categorias em ordem: ");
-    emOrdem(tree);
-
-    char busca[MAX_CAT_NAME];
-    print("Digite uma categoria para a busca\n");
-    scanf("%s", busca);
-
-    No* resultado=buscaCat(tree, busca);
-    if(resultado) printf("Categoria '%s' encontrada: ", busca, "| processando arquivo .csv correspondente\n");
-    else printf("Não encontrada: ", busca);
-
-    libera(tree);
-    libera(categoria);
-
-}
-
-
-*/
-
-
-
 // nessa função, usamos a categoria em arqCSV
 void processaLivro(const char *arqCSV, int indexCol_Vendas){
     //checar se há csv no final
@@ -171,10 +136,26 @@ void processaLivro(const char *arqCSV, int indexCol_Vendas){
         return;
     }
 
-    //contagem de estoque
-    //for(int k=0; i<)
+    int v=contaEstoque(arqCSV);
+    printf("Carregados %d livros\n", v);
 
-    //mostrar quantos livros existem em estoque
-    //printf("Carregados %d livros\n", livros-);
+    HeapMax* livroHeap=criarHeap(v);
+    //LivroVet livrosArm_Heap=liv;
+
+    inserirHeap(livroHeap, liv);
+
+    liberarHeap(livroHeap);
+    libera(liv);
     
+}
+
+void mostraPrimeiroMaisVendido(HeapMax* heap){
+    Livro primeiroMaisVendido=topoHeap(heap);
+
+    if(!primeiroMaisVendido.titulo){
+        perror("Não foi possível obter o título do livro\n");
+        return;
+    }
+
+    printf("Livro mais vendido (1º Lugar): '%s'", primeiroMaisVendido.titulo);
 }
