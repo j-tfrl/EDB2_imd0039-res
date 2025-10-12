@@ -37,6 +37,7 @@ Livro extrairMax(HeapMax *heap);
 void heapify(HeapMax *heap, int i);
 void reconstruirHeap(HeapMax *heap);
 void imprimirTopN(HeapMax *heap, int n);
+void mostraPrimeiroMaisVendido(HeapMax* heap);
 
 // Acesso ao topo (sem remover):
 Livro topoHeap(HeapMax *heap);

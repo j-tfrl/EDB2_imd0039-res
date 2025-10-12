@@ -126,11 +126,11 @@ void imprimirTopN(HeapMax *heap, int n) {
 // nessa função, usamos a categoria em arqCSV
 HeapMax* processaLivro(const char *arqCSV, int indexCol_Vendas){
 
-    Livro* liv=readCatCSV_provideHeap(*arqCSV);
+    Livro* liv=readCatCSV_provideHeap(arqCSV);
 
     if(!liv || liv->vendas<0){
         printf("Informações sobre vendas dos livros não estão disponíveis.\n");
-        return;
+        return NULL;
     }
 
     int v=contaEstoque(arqCSV);
@@ -138,13 +138,12 @@ HeapMax* processaLivro(const char *arqCSV, int indexCol_Vendas){
 
     HeapMax* livroHeap=criarHeap(v);
     //LivroVet livrosArm_Heap=liv;
-
     inserirHeap(livroHeap, liv);
 
     return livroHeap;
 
     liberarHeap(livroHeap);
-    libera(liv);
+    //libera(liv); -- IMPL f. para liberar memoria de livro
     
 }
 

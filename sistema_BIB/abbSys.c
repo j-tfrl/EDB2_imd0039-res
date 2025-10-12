@@ -79,7 +79,7 @@ char* processarCat(const char* arqCSV, int indexColCat){
 
     if(!categoria || categoria->count==0){
         printf("Nenhuma categoria encontrada. Insira um novo arquivo e tente novamente\n");
-        return;
+        return NULL;
     }
 
     printf("Carregadas %d categorias do .CSV", categoria->count);
@@ -91,13 +91,13 @@ char* processarCat(const char* arqCSV, int indexColCat){
     emOrdem(tree);
 
     char busca[MAX_CAT_NAME];
-    print("Digite uma categoria para a busca\n");
+    printf("Digite uma categoria para a busca\n");
     scanf("%s", busca);
 
     No* resultado=buscaCat(tree, busca);
     
     if(resultado){
-        printf("Categoria '%s' encontrada: ", busca, "| processando arquivo .csv correspondente\n");
+        printf("Categoria '%s' encontrada: | processando arquivo .csv correspondente\n", busca);
         return resultado->catExt;
     } 
     else{
@@ -150,7 +150,9 @@ void liberaLvet(LivroVet* arr){
 // para ajudar no processamento em heap.c
 Livro* readCatCSV_provideHeap(const char* busca){
     char* fileFormat=".csv";
-    char* file_provHeap=strcat(busca, fileFormat);
+    char file_provHeap[256]; //reserva de memória para o buffer
+    strcpy(file_provHeap, busca);
+    strcat(file_provHeap, fileFormat);
     FILE* abrir=fopen(file_provHeap, "r");
 
     if(!checkOpenFile(abrir)) return NULL;

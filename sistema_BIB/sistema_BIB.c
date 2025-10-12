@@ -37,7 +37,7 @@ int main(){
                     case 1:{
                         //if(catSelect) free(catSelect); // -- liberação (memória dinâmica em processaCat)
 
-                        catSelect=processaCat("categorias.csv", 1);
+                        catSelect=processarCat("categorias.csv", 1);
                         if(catSelect!=NULL){
                             heapCategoria=processaLivro(catSelect, 6);
                         }else{
