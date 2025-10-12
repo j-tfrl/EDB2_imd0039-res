@@ -27,7 +27,7 @@ No* buscaCat(No* raiz, const char* cat){
 
 // Processamento e liberação:
 void liberarABB(No* raiz);
-void processarCat(const char* arqCSV, int indexColCat);
+char* processarCat(const char* arqCSV, int indexColCat);
 
 // Contagem de estoque de livros
 int contaEstoque(char* busca);

@@ -73,7 +73,8 @@ void liberarABB(No* raiz){
 }
 
 // já mostra as categorias em ordem e permite a busca
-void processarCat(const char* arqCSV, int indexColCat){
+char* processarCat(const char* arqCSV, int indexColCat){
+
     CatVector* categoria=leCSV_Cat(arqCSV, indexColCat);
 
     if(!categoria || categoria->count==0){
@@ -94,11 +95,20 @@ void processarCat(const char* arqCSV, int indexColCat){
     scanf("%s", busca);
 
     No* resultado=buscaCat(tree, busca);
-    if(resultado) printf("Categoria '%s' encontrada: ", busca, "| processando arquivo .csv correspondente\n");
-    else printf("Não encontrada: ", busca);
+    
+    if(resultado){
+        printf("Categoria '%s' encontrada: ", busca, "| processando arquivo .csv correspondente\n");
+        return resultado->catExt;
+    } 
+    else{
+         printf("Não encontrada: ", busca);
+         return NULL;
+    }
 
     libera(tree);
     libera(categoria);
+
+
 
 }
 
@@ -138,7 +148,7 @@ void liberaLvet(LivroVet* arr){
 // arquivo em .csv que vai ser utilizado na heap
 // aqui os dados do livro da categoria serão lidos
 // para ajudar no processamento em heap.c
-Livro* readCatCSV_provideHeap(char* busca){
+Livro* readCatCSV_provideHeap(const char* busca){
     char* fileFormat=".csv";
     char* file_provHeap=strcat(busca, fileFormat);
     FILE* abrir=fopen(file_provHeap, "r");
