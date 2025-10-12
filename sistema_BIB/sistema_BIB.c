@@ -3,7 +3,7 @@
 #include "fileLoad.h"
 
 int main(){
-    printf("######### BIB - SISTEMA DE GESTÃO DE ESTOQUE #########")
+    printf("######### BIB - SISTEMA DE GESTÃO DE ESTOQUE #########");
      // Carregamento do arquivo .csv é automático, já que 
     // ele é o arquivo principal do programa
     FILE* csv_file=openFile("categorias.csv");
