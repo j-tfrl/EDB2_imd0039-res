@@ -159,3 +159,58 @@ void mostraPrimeiroMaisVendido(HeapMax* heap){
 
     printf("Livro mais vendido (1º Lugar): '%s'", primeiroMaisVendido.titulo);
 }
+
+Livro* buscaISBN(HeapMax* vLivro, int ISBN){
+    //Livro* buscaLivro;
+
+    for(int i=0;i<(vLivro->tamanho);i++){
+        if(vLivro->livros[i].isbn==ISBN){
+            printf("Livro encontrado: %s", vLivro->livros[i].titulo);
+            return &vLivro->livros[i];
+        }
+    }
+    perror("Livro não encontrado\n");
+    return NULL;
+
+}
+
+// Atualiza a heap depois da venda
+void updateHeap(HeapMax* heap, int isbn, int qtd){
+    if(buscaISBN(heap, isbn)==NULL || isbn<=0 || qtd<=0){
+        perror("Venda não realizada\n");
+        return;
+    }
+
+    Livro* vendaLivro=buscaISBN(heap, isbn);
+    int indexVendaLivro=0;
+
+
+    // procedimento de busca de indice na heap
+    for(int j=0; j<heap->tamanho; j++){
+        if(heap->livros[j].isbn==isbn) indexVendaLivro=j;
+    }
+
+    int vendaAnt=heap->livros[indexVendaLivro].vendas;
+   
+    heap->livros[indexVendaLivro].estoque-=qtd;
+    heap->livros[indexVendaLivro].vendas+=qtd;
+
+    //bool vendaAlt=heap->livros[indexVendaLivro].vendas>vendaAnt;
+    bool subir=true; 
+
+    while(subir && indexVendaLivro>0){
+        //rotina 1 - atualização de prioridade
+        int indexPai=pai(indexVendaLivro); // começa tomando o nó como o pai
+        bool comp_venda=heap->livros[indexPai].vendas<heap->livros[indexVendaLivro].vendas;
+
+        if(comp_venda){
+            trocar(&heap->livros[indexVendaLivro], 
+                &heap->livros[indexPai]);
+            indexVendaLivro=indexPai;
+        }
+        else{
+            //heapify(heap, indexVendaLivro);
+            subir=false;
+        }
+    }
+}
