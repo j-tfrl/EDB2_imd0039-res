@@ -65,13 +65,23 @@ No* rot_dir_esq(No* y){
 }
 
 
-No* rotacao_esquerda(No* y){
-     No* x=y->direito;
-    No* z=x->esquerdo;
+No* rotacao_esquerda(No* x){
+    No* y=x->direito;
+    No* z=y->esquerdo;
 
-    //impl
+    y->esquerdo=x;
+    x->direito=z;
 
-    return x;
+    if(obter_altura(x->esquerdo)>obter_altura(x->direito))
+        x->altura=1+obter_altura(x->esquerdo);
+    else
+        x->altura=1+obter_altura(x->direito);
+    if(obter_altura(y->esquerdo)>obter_altura(y->direito))
+        y->altura=1+obter_altura(y->esquerdo);
+    else
+        y->altura=1+obter_altura(y->direito);
+
+    return y;
 }
 
 
@@ -79,7 +89,17 @@ No* rot_esq_dir(No* y){
      No* x=y->direito;
     No* z=x->esquerdo;
 
-    //impl
+    y=rotacao_esquerda(y);
 
-    return x;
+    if(obter_altura(y->esquerdo)>obter_altura(y->direito))
+        y->altura=1+obter_altura(y->esquerdo);
+    else
+        y->altura=1+obter_altura(y->direito);
+
+    if(obter_altura(x->esquerdo)>obter_altura(x->direito))
+        x->altura=1+obter_altura(x->esquerdo);
+    else
+        x->altura=1+obter_altura(x->direito);
+    
+    return y;
 }
