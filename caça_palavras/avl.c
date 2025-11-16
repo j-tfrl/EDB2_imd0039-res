@@ -103,3 +103,71 @@ No* rot_esq_dir(No* y){
     
     return y;
 }
+
+No* remover_no(No* raiz, char* p){
+    if(raiz==NULL) return raiz;
+
+    if(p<raiz->p) raiz->esquerdo=remover_no(raiz->esquerdo, p);
+    else if(p>raiz->p) raiz->direito=remover_no(raiz->direito, p);
+    else{
+        /*No com apenas um filho*/
+        if((raiz->esquerdo==NULL) || raiz->direito==NULL){
+            No* temp; // Nó temporário que vai receber as modificações
+
+            if(raiz->esquerdo!=NULL) temp=raiz->esquerdo;
+            else
+                temp=raiz->direito;
+
+           /*Caso onde há nenhum filho*/
+           if(temp==NULL){
+            temp=raiz;
+            raiz=NULL;
+           }else{
+            *raiz=*temp;
+           }
+
+           free(temp);
+        }else{ 
+            /* A IMPLEMENTAR: MENOR VALOR PARA NO (COM BASE EM CARACTERE)
+            
+          
+            //No* temp=menor
+
+            //raiz->direito=remover_no(raiz->direito, temp->p);
+          */
+        }
+    }
+        //   Se a árvore tinha apenas um nó. 
+        if(raiz == NULL)
+            return raiz;
+
+        if(obter_altura(raiz->esquerdo) > obter_altura(raiz->direito))
+            raiz->altura = 1 + obter_altura(raiz->esquerdo);
+        else
+            raiz->altura = 1 + obter_altura(raiz->direito);
+
+        int b = balanco(raiz);
+
+        //   Caso 1: Desbalanceamento à esquerda. 
+        if(b > 1 && balanco(raiz->esquerdo) >= 0)
+            return rotacao_direita(raiz);
+
+        //Caso 2: Desbalanceamento esquerda-direita. 
+        if(b > 1 && balanco(raiz->esquerdo) < 0){
+            raiz->esquerdo = rotacao_esquerda(raiz->esquerdo);
+            return rotacao_direita(raiz);
+        }
+
+        // Caso 3: Desbalanceamento à direita. 
+        if(b < -1 && balanco(raiz->direito) <= 0) return rotacao_esquerda(raiz);
+
+        //* Caso 4: Desbalanceamento direita-esquerda. 
+        if(b < -1 && balanco(raiz->direito) > 0){
+            raiz->direito = rotacao_direita(raiz->direito);
+            return rotacao_esquerda(raiz);
+        }
+
+        return raiz;
+            
+            
+}
