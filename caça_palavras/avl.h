@@ -27,7 +27,7 @@ No* rot_esq_dir(No* x);
 No* inserir_p(No* no, char* p);
 No* remover_p(No* raiz, char* p);
 
-//No* menor_valorNo(No* no);
+No* menor_valorNo(No* no);
 
 void imprimir_em_ordem(No* raiz);
 

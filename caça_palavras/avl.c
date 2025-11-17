@@ -1,6 +1,5 @@
 #include "avl.h"
 
-
 int obter_altura(No* no){
     if(no==NULL) return -1;
     else return no->altura;
@@ -20,7 +19,6 @@ int balanco(No* no){
     if(no==NULL) return 0;
     else return obter_altura(no-> esquerdo) - obter_altura(no->direito);
 }
-
 
 // Rotações
 No* rotacao_direita(No* y){
@@ -104,11 +102,11 @@ No* rot_esq_dir(No* y){
     return y;
 }
 
-No* remover_no(No* raiz, char* p){
+No* remover_p(No* raiz, char* p){
     if(raiz==NULL) return raiz;
 
-    if(p<raiz->p) raiz->esquerdo=remover_no(raiz->esquerdo, p);
-    else if(p>raiz->p) raiz->direito=remover_no(raiz->direito, p);
+    if(p<raiz->p) raiz->esquerdo=remover_p(raiz->esquerdo, p);
+    else if(p>raiz->p) raiz->direito=remover_p(raiz->direito, p);
     else{
         /*No com apenas um filho*/
         if((raiz->esquerdo==NULL) || raiz->direito==NULL){
@@ -128,13 +126,9 @@ No* remover_no(No* raiz, char* p){
 
            free(temp);
         }else{ 
-            /* A IMPLEMENTAR: MENOR VALOR PARA NO (COM BASE EM CARACTERE)
-            
-          
-            //No* temp=menor
-
-            //raiz->direito=remover_no(raiz->direito, temp->p);
-          */
+            No* temp=menor_valorNo(raiz->direito);
+            raiz->p=temp->p;
+            raiz->direito=remover_p(raiz->direito,temp->p);
         }
     }
         //   Se a árvore tinha apenas um nó. 
@@ -170,4 +164,59 @@ No* remover_no(No* raiz, char* p){
         return raiz;
             
             
+}
+
+No* inserir_p(No* no, char* p){
+    if(no==NULL) return criar_no(p);
+
+    if(p<no->p) no->esquerdo=inserir_p(no->esquerdo, p);
+    else if (p>no->p) no->direito=inserir_p(no->esquerdo, p);
+    else
+        return no;
+
+    if(obter_altura(no->esquerdo)>obter_altura(no->direito)){
+        no->altura=1+obter_altura(no->esquerdo);
+    }else{
+        no->altura=1+obter_altura(no->direito);
+    }
+
+    int b=balanco(no);
+
+
+    if(b > 1 && p < no->esquerdo->p)
+    return rotacao_direita(no);
+
+  // Caso 2: Desbalanceamento à direita (Rotação à esquerda). 
+    if(b < -1 && p > no->direito->p)
+        return rotacao_esquerda(no);
+
+  // Caso 3: Desbalanceamento esquerda-direita (Rotação dupla esquerda-direita). 
+    if(b > 1 && p > no->esquerdo->p){
+        no->esquerdo = rotacao_esquerda(no->esquerdo);
+        return rotacao_direita(no);
+    }
+
+  // Caso 4: Desbalanceamento direita-esquerda (Rotação dupla direita-esquerda). 
+    if(b < -1 && p > no->direito->p){
+        no->direito = rotacao_direita(no->direito);
+        return rotacao_esquerda(no);
+    }
+
+    return no;
+
+}
+
+
+No* menor_valorNo(No* no){
+    No* at=no;
+    while(at->esquerdo!=NULL) at=at->esquerdo;
+    return at;
+}
+
+void imprimir_em_ordem(No* raiz){
+    if(raiz!=NULL){
+        imprimir_em_ordem(raiz->esquerdo);
+        printf("%s \n", raiz->p);
+        imprimir_em_ordem(raiz->direito);
+    }
 }
