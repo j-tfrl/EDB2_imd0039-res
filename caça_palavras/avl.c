@@ -7,7 +7,20 @@ int obter_altura(No* no){
 
 No* criar_no(char* p){
     No* no=(No*)malloc(sizeof(No));
-    no->p=p;
+    if(no==NULL) return NULL; 
+
+    // aloca memoria para a string
+    no->p=(char*)malloc(strlen(p)+1); // +1  para o caractere final
+
+    if(no->p==NULL){
+        free(no);
+        perror("Não foi possível alocar a palavra no nó");
+        return NULL;
+    }
+
+    // feito todos os controles, alocamos na memória
+    strcpy(no->p, p);
+    //no->p=p;
     no->esquerdo=NULL;
     no->direito=NULL;
     no->altura=0;
@@ -105,31 +118,33 @@ No* rot_esq_dir(No* y){
 No* remover_p(No* raiz, char* p){
     if(raiz==NULL) return raiz;
 
-    if(p<raiz->p) raiz->esquerdo=remover_p(raiz->esquerdo, p);
-    else if(p>raiz->p) raiz->direito=remover_p(raiz->direito, p);
+    int cmp=strcmp(p, raiz->p);
+    
+    if(cmp<0) raiz->esquerdo=remover_p(raiz->esquerdo, p);
+    else if(cmp>0) raiz->direito=remover_p(raiz->direito, p);
     else{
-        /*No com apenas um filho*/
+        /*No com apenas um filho ou nenhum*/
         if((raiz->esquerdo==NULL) || raiz->direito==NULL){
-            No* temp; // Nó temporário que vai receber as modificações
-
-            if(raiz->esquerdo!=NULL) temp=raiz->esquerdo;
-            else
-                temp=raiz->direito;
-
-           /*Caso onde há nenhum filho*/
-           if(temp==NULL){
-            temp=raiz;
-            raiz=NULL;
-           }else{
-            *raiz=*temp;
-           }
-
-           free(temp);
+            No* temp = (raiz->esquerdo != NULL) ? raiz->esquerdo : raiz->direito;
+            
+            liberar_no(raiz); //libera a string e a struct
+            
+            return temp;
         }else{ 
             No* temp=menor_valorNo(raiz->direito);
+
+            free(raiz->p);
+
+            raiz->p=(char*)malloc(strlen(temp->p)+1);
+
+            if(raiz->p==NULL) return NULL;
+            strcpy(raiz->p, temp->p); //fazemos uma copia para tomar a palavra
+            /*
             raiz->p=temp->p;
+        */
             raiz->direito=remover_p(raiz->direito,temp->p);
-        }
+
+            }
     }
         //   Se a árvore tinha apenas um nó. 
         if(raiz == NULL)
@@ -169,8 +184,10 @@ No* remover_p(No* raiz, char* p){
 No* inserir_p(No* no, char* p){
     if(no==NULL) return criar_no(p);
 
-    if(p<no->p) no->esquerdo=inserir_p(no->esquerdo, p);
-    else if (p>no->p) no->direito=inserir_p(no->esquerdo, p);
+    int cmp=strcmp(p, no->p);
+
+    if(cmp<0) no->esquerdo=inserir_p(no->esquerdo, p);
+    else if (cmp>0) no->direito=inserir_p(no->esquerdo, p);
     else
         return no;
 
@@ -182,22 +199,22 @@ No* inserir_p(No* no, char* p){
 
     int b=balanco(no);
 
-
-    if(b > 1 && p < no->esquerdo->p)
+    // usos de rotacao
+    if(b > 1 && strcmp(p, no->esquerdo->p)<0)
     return rotacao_direita(no);
 
   // Caso 2: Desbalanceamento à direita (Rotação à esquerda). 
-    if(b < -1 && p > no->direito->p)
+    if(b < -1 && strcmp(p, no->esquerdo->p)>0)
         return rotacao_esquerda(no);
 
   // Caso 3: Desbalanceamento esquerda-direita (Rotação dupla esquerda-direita). 
-    if(b > 1 && p > no->esquerdo->p){
+    if(b > 1 && strcmp(p, no->esquerdo->p)>0){
         no->esquerdo = rotacao_esquerda(no->esquerdo);
         return rotacao_direita(no);
     }
 
   // Caso 4: Desbalanceamento direita-esquerda (Rotação dupla direita-esquerda). 
-    if(b < -1 && p > no->direito->p){
+    if(b < -1 && strcmp(p, no->esquerdo->p)<0){
         no->direito = rotacao_direita(no->direito);
         return rotacao_esquerda(no);
     }
@@ -219,4 +236,17 @@ void imprimir_em_ordem(No* raiz){
         printf("%s \n", raiz->p);
         imprimir_em_ordem(raiz->direito);
     }
+}
+
+void liberar_no(No* no){
+    if(no==NULL) return;
+    free(no->p); // liberamos na palavra
+    free(no); // liberamos no nó
+}
+
+void del_arv(No* raiz){
+    if(raiz==NULL) return;
+    del_arv(raiz->esquerdo);
+    del_arv(raiz->direito);
+    liberar_no(raiz);
 }

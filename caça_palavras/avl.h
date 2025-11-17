@@ -32,6 +32,10 @@ No* menor_valorNo(No* no);
 void imprimir_em_ordem(No* raiz);
 
 
+// liberação de memória em no e na estrutura geral
+void liberar_no(No* no);
+void del_arv(No* raiz); // impede vazamentos de memória na AVL
+
 //###### FUNÇÕES DE PROCESSAMENTO DE ARQUIVO ######
 bool checkOpenFile(FILE* arqTxt);
 FILE* openFile(const char *file);
