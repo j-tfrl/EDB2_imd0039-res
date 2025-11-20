@@ -56,23 +56,9 @@ No* rotacao_direita(No* y){
 
 }
 
-No* rot_dir_esq(No* y){
-    No* x=y->direito;
-    No* z=x->esquerdo;
-    
-    y=rotacao_direita(y);
-
-    if(obter_altura(x->esquerdo)>obter_altura(x->direito))
-        x->altura=1+obter_altura(x->esquerdo);
-    else
-        x->altura=1+obter_altura(y->direito);
-
-    if(obter_altura(y->esquerdo)>obter_altura(y->direito))
-        y->altura=1+obter_altura(y->esquerdo);
-    else
-        y->altura=1+obter_altura(y->direito);
-
-    return y;
+No* rot_dir_esq(No* x){
+    x->esquerdo=rotacao_esquerda(x->esquerdo);
+    return rotacao_direita(x);
 }
 
 
@@ -97,22 +83,8 @@ No* rotacao_esquerda(No* x){
 
 
 No* rot_esq_dir(No* y){
-     No* x=y->direito;
-    No* z=x->esquerdo;
-
-    y=rotacao_esquerda(y);
-
-    if(obter_altura(y->esquerdo)>obter_altura(y->direito))
-        y->altura=1+obter_altura(y->esquerdo);
-    else
-        y->altura=1+obter_altura(y->direito);
-
-    if(obter_altura(x->esquerdo)>obter_altura(x->direito))
-        x->altura=1+obter_altura(x->esquerdo);
-    else
-        x->altura=1+obter_altura(x->direito);
-    
-    return y;
+    y->direito=rotacao_direita(y->direito);
+    return rotacao_esquerda(y);
 }
 
 No* remover_p(No* raiz, char* p){
@@ -187,21 +159,36 @@ No* inserir_p(No* no, char* p){
     int cmp=strcmp(p, no->p);
 
     if(cmp<0) no->esquerdo=inserir_p(no->esquerdo, p);
-    else if (cmp>0) no->direito=inserir_p(no->esquerdo, p);
+    else if (cmp>0) no->direito=inserir_p(no->direito, p);
     else
         return no;
 
+    //alturas para balanços
+    int h_e=obter_altura(no->esquerdo);
+    int h_d=obter_altura(no->direito);
+
+    no->altura=1+((h_e>h_d)) ? h_e:h_d; // atualização da altura com base nas ramificações
+    int b=balanco(no);
+
+    /// BALANCEAMENTO ///
+        if(b > 1 && strcmp(p, no->esquerdo->p)<0)
+            return rotacao_direita(no);
+
+        if (b < -1 && strcmp(p, no->direito->p) > 0) 
+        return rotacao_esquerda(no);
+    
+
+        
+    /*
     if(obter_altura(no->esquerdo)>obter_altura(no->direito)){
         no->altura=1+obter_altura(no->esquerdo);
     }else{
         no->altura=1+obter_altura(no->direito);
     }
 
-    int b=balanco(no);
 
     // usos de rotacao
-    if(b > 1 && strcmp(p, no->esquerdo->p)<0)
-    return rotacao_direita(no);
+  
 
   // Caso 2: Desbalanceamento à direita (Rotação à esquerda). 
     if(b < -1 && strcmp(p, no->esquerdo->p)>0)
@@ -218,7 +205,7 @@ No* inserir_p(No* no, char* p){
         no->direito = rotacao_direita(no->direito);
         return rotacao_esquerda(no);
     }
-
+*/
     return no;
 
 }
