@@ -29,7 +29,6 @@ int main(){
     free(tab);
 
 
-   // liberarTrie(trie); !! IMPL
-
+   liberarTrie(trie);
     return 0;
 }

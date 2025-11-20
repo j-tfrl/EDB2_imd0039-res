@@ -93,3 +93,10 @@ int prefixoTrie(TrieNode *raiz, const char *palavra)
 
     return 1;
 }
+
+void liberarTrie(TrieNode *r){
+    if(r==NULL) return;
+    // Liberamos recursivamente para cada filho
+    for(int i=0; i<26; i++) liberarTree(r->filhos[i]);
+    free(r); // logo após, a própria raiz da trie
+}

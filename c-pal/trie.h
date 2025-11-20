@@ -25,4 +25,6 @@ int buscarTrie(TrieNode *raiz, const char *palavra);
 // IMPORTANTE para interromper buscas no tabuleiro cedo:
 int prefixoTrie(TrieNode *raiz, const char *palavra);
 
+void liberarTrie(TrieNode *r);
+
 #endif
