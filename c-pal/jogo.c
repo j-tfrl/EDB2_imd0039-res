@@ -1,10 +1,5 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <ctype.h>
-#include <string.h>
 
-#include "trie.h"
-#include "avl.h"
+#include "jogo.h"
 
 #define MAX 100
 
@@ -16,7 +11,10 @@
 // Lembrar de liberar depois no main() para evitar memory leak:
 char **lerTabuleiro(int *n)
 {
-    FILE *arq = fopen("tabuleiro.txt", "r");
+    //FILE *arq = fopen("tabuleiro.txt", "r");
+
+    FILE *arq = fopen("caca-pal__mus.txt", "r");
+
     if (!arq)
     {
         printf("Erro ao abrir tabuleiro.txt\n");
@@ -48,7 +46,7 @@ char **lerTabuleiro(int *n)
 // OBSERVAÇÃO: Cada linha do arquivo representa uma palavra permitida:
 void carregarPalavras(TrieNode *raiz)
 {
-    FILE *arq = fopen("palavras.txt", "r");
+    FILE *arq = fopen("p__mus.txt", "r");
     if (!arq)
     {
         printf("Erro ao abrir palavras.txt\n");

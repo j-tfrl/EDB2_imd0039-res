@@ -1,8 +1,9 @@
 #include "avl.h"
 #include "trie.h"
+#include "jogo.h"
 
 int main(){
-    print("#..*#..*#..*#..* CAÇA PALAVRAS *..#*..#*..#*..#\n\n");
+    printf("#..*#..*#..*#..* CAÇA PALAVRAS *..#*..#*..#*..#\n\n");
 
     //WHILE impl -- laco para controlar e informar o usuário para comecar o jogo
     TrieNode *trie = criarNoTrie();

@@ -1,3 +1,6 @@
+#ifndef AVL_H
+#define AVL_H
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
@@ -36,10 +39,4 @@ void imprimir_em_ordem(No* raiz);
 void liberar_no(No* no);
 void del_arv(No* raiz); // impede vazamentos de memória na AVL
 
-//###### FUNÇÕES DE PROCESSAMENTO DE ARQUIVO ######
-/*
-bool checkOpenFile(FILE* arqTxt);
-FILE* openFile(const char *file);
-void readFile(FILE* datatxt);
-void closeFile(FILE* f);
-*/
+#endif //AVL_H

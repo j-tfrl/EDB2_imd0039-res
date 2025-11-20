@@ -171,41 +171,14 @@ No* inserir_p(No* no, char* p){
     int b=balanco(no);
 
     /// BALANCEAMENTO ///
-        if(b > 1 && strcmp(p, no->esquerdo->p)<0)
-            return rotacao_direita(no);
-
-        if (b < -1 && strcmp(p, no->direito->p) > 0) 
-        return rotacao_esquerda(no);
+    // adiciona palavra que é anterior ao do no filho esq.
+    if(b > 1 && strcmp(p, no->esquerdo->p)<0) return rotacao_direita(no);
+    // análogo: 
+    if (b < -1 && strcmp(p, no->direito->p) > 0) return rotacao_esquerda(no);
     
+    if (b>1 && strcmp(p, no->esquerdo->p)>0) return rot_esq_dir(no);
+    if (b<-1 && strcmp(p, no->direito->p)<0) return rot_dir_esq(no);
 
-        
-    /*
-    if(obter_altura(no->esquerdo)>obter_altura(no->direito)){
-        no->altura=1+obter_altura(no->esquerdo);
-    }else{
-        no->altura=1+obter_altura(no->direito);
-    }
-
-
-    // usos de rotacao
-  
-
-  // Caso 2: Desbalanceamento à direita (Rotação à esquerda). 
-    if(b < -1 && strcmp(p, no->esquerdo->p)>0)
-        return rotacao_esquerda(no);
-
-  // Caso 3: Desbalanceamento esquerda-direita (Rotação dupla esquerda-direita). 
-    if(b > 1 && strcmp(p, no->esquerdo->p)>0){
-        no->esquerdo = rotacao_esquerda(no->esquerdo);
-        return rotacao_direita(no);
-    }
-
-  // Caso 4: Desbalanceamento direita-esquerda (Rotação dupla direita-esquerda). 
-    if(b < -1 && strcmp(p, no->esquerdo->p)<0){
-        no->direito = rotacao_direita(no->direito);
-        return rotacao_esquerda(no);
-    }
-*/
     return no;
 
 }
